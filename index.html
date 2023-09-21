@@ -35,38 +35,41 @@
       background-color: brown;
     }
   </style>
+  <body>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const body = document.body;
+        const divs = [];
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const body = document.body;
-      const divs = [];
+        for (let i = 0; i < 100; i += 1) {
+          const div = document.createElement("div");
+          div.className = "custom-div";
+          div.innerText = `div ${i + 1}`;
+          div.dataset.isMoved = "false";
+          div.dataset.position = i;
 
-      for (let i = 0; i < 100; i += 1) {
-        const div = document.createElement("div");
-        div.className = "custom-div";
-        div.innerText = `div ${i + 1}`;
-        div.dataset.isMoved = "false";
-        div.dataset.position = i;
+          div.addEventListener("click", () => {
+            if (+div.dataset.position === 0) {
+              return;
+            }
 
-        div.addEventListener("click", () => {
-          if (+div.dataset.position === 0) {
-            return;
-          }
+            if (div.dataset.isMoved === "true") {
+              body.insertBefore(
+                div,
+                body.childNodes[+div.dataset.position + 2]
+              );
+              div.dataset.isMoved = "false";
+            } else {
+              body.insertBefore(div, body.firstElementChild);
+              div.dataset.isMoved = "true";
+            }
+          });
 
-          if (div.dataset.isMoved === "true") {
-            body.insertBefore(div, body.childNodes[+div.dataset.position + 2]);
-            div.dataset.isMoved = "false";
-          } else {
-            body.insertBefore(div, body.firstElementChild);
-            div.dataset.isMoved = "true";
-          }
-        });
+          divs.push(div);
+        }
 
-        divs.push(div);
-      }
-
-      body.append(...divs);
-    });
-  </script>
-  <body></body>
+        body.append(...divs);
+      });
+    </script>
+  </body>
 </html>
